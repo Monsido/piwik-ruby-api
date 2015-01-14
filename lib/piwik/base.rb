@@ -11,22 +11,22 @@ module Piwik
   class UnknownSite < ArgumentError; end
   class UnknownUser < ArgumentError; end
   class UnknownGoal < ArgumentError; end
-  
+
   class Base
     include Piwik::Typecast
     include Piwik::ApiScope
     @@template  = <<-EOF
 # .piwik
-# 
+#
 # Please fill in fields like this:
 #
 #  piwik_url: http://your.piwik.site
 #  auth_token: secret
 #
-piwik_url: 
-auth_token: 
+piwik_url:
+auth_token:
 EOF
-    
+
     # common constructor, using ostruct for attribute storage
     attr_accessor :attributes
     def initialize params = {}
@@ -35,11 +35,11 @@ EOF
         @attributes.send(:"#{k}=",typecast(v))
       end
     end
-    
+
     def id_attr
       self.class.id_attr
     end
-    
+
     def save
       if new?
         resp = collection.add(attributes)
@@ -48,15 +48,15 @@ EOF
       else
         collection.save(attributes)
       end
-      
+
     end
     alias :update :save
-    
+
     def delete
       collection.delete(attributes)
     end
     alias :destroy :delete
-    
+
     # Returns <tt>true</tt> if the current site does not exists in the Piwik yet.
     def new?
       begin
@@ -65,12 +65,12 @@ EOF
         else
           created_at.blank?
         end
-        
+
       rescue Exception => e
         nil
       end
     end
-    
+
     #id will try and return the value of the Piwik item id if it exists
     def id
       begin
@@ -83,12 +83,12 @@ EOF
         $stderr.puts e
       end
     end
-    
+
     #created_at will try and return the value of the Piwik item id if it exists
     def created_at
       attributes.send(:ts_created) rescue nil
     end
-    
+
     # delegate attribute calls to @attributes storage
     def method_missing(method,*args,&block)
       if self.attributes.respond_to?(method)
@@ -97,47 +97,47 @@ EOF
         super
       end
     end
-    
+
     def parse_xml xml; self.class.parse_xml xml; end
-    
+
     # Calls the supplied Piwik API method, with the supplied parameters.
-    # 
-    # Returns a string containing the XML reply from Piwik, or raises a 
-    # <tt>Piwik::ApiError</tt> exception with the error message returned by Piwik 
+    #
+    # Returns a string containing the XML reply from Piwik, or raises a
+    # <tt>Piwik::ApiError</tt> exception with the error message returned by Piwik
     # in case it receives an error.
     def call(method, params={})
       self.class.call(method, params, config[:piwik_url], config[:auth_token])
     end
-    
+
     def config
       @config ||= self.class.load_config_from_file
     end
-    
+
     def collection
       self.class.collection
     end
-    
+
     class << self
       def collection
         "#{self.to_s.pluralize}".safe_constantize
       end
-      
+
       # This is required to normalize the API responses when the Rails XmlSimple version is used
       def parse_xml xml
         result = XmlSimple.xml_in(xml, {'ForceArray' => false})
         result = result['result'] if result['result']
         result
       end
-      
+
       def load id
         collection.get(id_attr => id)
       end
       alias :reload :load
-      
+
       # Calls the supplied Piwik API method, with the supplied parameters.
-      # 
-      # Returns a string containing the XML reply from Piwik, or raises a 
-      # <tt>Piwik::ApiError</tt> exception with the error message returned by Piwik 
+      #
+      # Returns a string containing the XML reply from Piwik, or raises a
+      # <tt>Piwik::ApiError</tt> exception with the error message returned by Piwik
       # in case it receives an error.
       def call(method, params, piwik_url=nil, auth_token=nil)
         params ||= {}
@@ -148,7 +148,8 @@ EOF
         url << params.to_query
         verbose_obj_save = $VERBOSE
         $VERBOSE = nil # Suppress "warning: peer certificate won't be verified in this SSL session"
-        xml = RestClient.get(url)
+        #xml = RestClient.get(url) #Original
+        xml = RestClient::Request.execute(:method => :get, :url => url, :headers => {}, verify_ssl: OpenSSL::SSL::VERIFY_NONE)
         $VERBOSE = verbose_obj_save
         if xml.is_a?(String) && xml.force_encoding('BINARY').is_binary_data?
           xml.force_encoding('BINARY')
@@ -159,10 +160,10 @@ EOF
           xml
         end
       end
-      
+
       # Checks for the config, creates it if not found
       def load_config_from_file
-        # Useful for testing or embedding credentials - although as always 
+        # Useful for testing or embedding credentials - although as always
         # it is not recommended to embed any kind of credentials in source code for security reasons
         return { :piwik_url => PIWIK_URL, :auth_token => PIWIK_TOKEN } if PIWIK_URL.present? and PIWIK_TOKEN.present?
         config = {}
@@ -193,4 +194,3 @@ EOF
     end
   end
 end
-

@@ -19,6 +19,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency('xml-simple')
   s.add_dependency('rest-client')
-  s.add_dependency('activesupport','~> 4.0')
+  s.add_dependency('activesupport','~> 4')
   s.add_development_dependency('rspec')
 end

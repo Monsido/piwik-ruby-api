@@ -5,7 +5,7 @@ require 'active_support'
 require 'active_support/core_ext'
 require 'string'
 
-%W{ 
+%W{
   typecast api_scope base data_methods api_module api_response version
   seo referrers transitions user_country visit_time visitor_interest visits_summary
   user_settings annotations sites_manager users_manager
@@ -13,6 +13,7 @@ require 'string'
   provider visit_frequency multi_sites mobile_messaging
   custom_variables languages_manager goals example_api api
   site user events custom_dimensions
+  devices_detection
 }.each { |r| require "piwik/#{r}" }
 
 module Piwik

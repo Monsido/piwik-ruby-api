@@ -12,5 +12,11 @@ module Piwik
       getWideScreen
       getPlugin
     }
+
+    scoped_methods do
+      def resolution params = {}
+        getResolution(defaults.merge(params))
+      end
+    end
   end
 end

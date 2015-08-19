@@ -35,6 +35,7 @@ module Piwik
     api_scope :goals
     api_scope :devices, :class_name => 'DevicesDetection'
     api_scope :user, :class_name => 'UserSettings'
+    api_scope :countries, :class_name => 'UserCountry'
 
     # Returns search engine information for site home
     def seo_info

@@ -11,7 +11,7 @@ require 'string'
   actions live pdf_reports scheduled_reports image_graph
   provider visit_frequency multi_sites mobile_messaging
   custom_variables languages_manager goals example_api api devices_detection
-  site user resolution
+  site user resolution user_languages
 }.each { |r| require "piwik/#{r}" }
 
 module Piwik

@@ -148,8 +148,11 @@ EOF
         url << params.to_query
         verbose_obj_save = $VERBOSE
         $VERBOSE = nil # Suppress "warning: peer certificate won't be verified in this SSL session"
-        #xml = RestClient.get(url) #Original
-        xml = RestClient::Request.execute(:method => :get, :url => url, :headers => {}, verify_ssl: OpenSSL::SSL::VERIFY_NONE)
+        if (defined? PIWIK_VERIFY && !PIWIK_VERIFY.nil?)
+          xml = RestClient::Request.execute(:method => :get, :url => url, :headers => {}, verify_ssl: OpenSSL::SSL::VERIFY_NONE)
+        else
+          xml = RestClient.get(url)
+        end
         $VERBOSE = verbose_obj_save
         if xml.is_a?(String) && xml.force_encoding('BINARY').is_binary_data?
           xml.force_encoding('BINARY')

@@ -1,5 +1,5 @@
 module Piwik
-  class Resoultion < ApiModule
+  class Resolution < ApiModule
     available_methods %W{
       getResolution
       getConfiguration

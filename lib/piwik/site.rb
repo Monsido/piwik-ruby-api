@@ -38,6 +38,7 @@ module Piwik
     api_scope :countries, :class_name => 'UserCountry'
     api_scope :resolution
     api_scope :language, :class_name => 'UserLanguage'
+    api_scope :users_flow
 
     # Returns search engine information for site home
     def seo_info

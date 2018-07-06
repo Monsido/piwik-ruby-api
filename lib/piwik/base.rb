@@ -106,6 +106,7 @@ EOF
     # <tt>Piwik::ApiError</tt> exception with the error message returned by Piwik
     # in case it receives an error.
     def call(method, params={})
+      config = config.merge(params.slice(:piwik_url, :auth_token))
       self.class.call(method, params, config[:piwik_url], config[:auth_token])
     end
 
@@ -129,8 +130,11 @@ EOF
         result
       end
 
-      def load id
-        collection.get(id_attr => id)
+      def load id, options = {}
+        params = {id_attr => id}
+        params[:piwik_url] = options[:piwik_url] if options[:piwik_url]
+        params[:auth_token] = options[:auth_token] if options[:auth_token]
+        collection.get(params)
       end
       alias :reload :load
 
@@ -183,7 +187,7 @@ EOF
           open(File.join(home,filename),'w') { |f| f.puts @@template }
           YAML::load(@@template)
         end
-        temp_config.each { |k,v| config[k.to_sym] = v } if temp_config
+        temp_config.each { |k,v| config[k.to_sym] = v } if temp_config        
         if config[:piwik_url] == nil || config[:auth_token] == nil
           if defined?(RAILS_ROOT) and RAILS_ROOT != nil
             raise MissingConfiguration, "Please edit ./config/piwik.yml to include your piwik url and auth_key"

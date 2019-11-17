@@ -47,7 +47,7 @@ module Piwik
         getDownloads(defaults.merge(params))
       end
 
-      def download(download_url, params{})
+      def download(download_url, params = {})
         getDownload(defaults.merge(params).merge(:downloadUrl => download_url))
       end
 

@@ -7,6 +7,7 @@ require 'ostruct'
 
 module Piwik
   class ApiError < StandardError; end
+  class SegmentError < StandardError; end
   class MissingConfiguration < ArgumentError; end
   class UnknownSite < ArgumentError; end
   class UnknownUser < ArgumentError; end
@@ -160,6 +161,8 @@ EOF
         $VERBOSE = verbose_obj_save
         if xml.is_a?(String) && xml.force_encoding('BINARY').is_binary_data?
           xml.force_encoding('BINARY')
+        elsif xml =~ /error message="These reports have no data, because the Segment you requested (direct) has not yet been processed by the system/
+          raise SegmentError, "Data temporarily unavailable for given timeframe"
         elsif xml =~ /error message=/
           result = XmlSimple.xml_in(xml, {'ForceArray' => false})
           raise ApiError, result['error']['message'] if result['error']
@@ -187,7 +190,7 @@ EOF
           open(File.join(home,filename),'w') { |f| f.puts @@template }
           YAML::load(@@template)
         end
-        temp_config.each { |k,v| config[k.to_sym] = v } if temp_config        
+        temp_config.each { |k,v| config[k.to_sym] = v } if temp_config
         if config[:piwik_url] == nil || config[:auth_token] == nil
           if defined?(RAILS_ROOT) and RAILS_ROOT != nil
             raise MissingConfiguration, "Please edit ./config/piwik.yml to include your piwik url and auth_key"

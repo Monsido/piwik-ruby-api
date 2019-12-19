@@ -161,7 +161,7 @@ EOF
         $VERBOSE = verbose_obj_save
         if xml.is_a?(String) && xml.force_encoding('BINARY').is_binary_data?
           xml.force_encoding('BINARY')
-        elsif xml =~ /error message="These reports have no data, because the Segment you requested (direct) has not yet been processed by the system/
+        elsif xml =~ /error message="These reports have no data, because the Segment you requested/
           raise SegmentError, "Data temporarily unavailable for given timeframe"
         elsif xml =~ /error message=/
           result = XmlSimple.xml_in(xml, {'ForceArray' => false})

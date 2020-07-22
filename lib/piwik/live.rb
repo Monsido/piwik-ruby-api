@@ -6,5 +6,11 @@ module Piwik
       getVisitorProfile
       getMostRecentVisitorId
     }
+
+    scoped_methods do
+      def last_visits params = {}
+        getLastVisitsDetails(defaults.merge(params))
+      end
+    end
   end
 end

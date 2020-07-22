@@ -3,6 +3,8 @@ module Piwik
     available_methods %W{
       getCounters
       getLastVisitsDetails
+      getVisitorProfile
+      getMostRecentVisitorId
     }
   end
 end

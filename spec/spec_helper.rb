@@ -1,6 +1,9 @@
 require 'rspec/its'
 require 'piwik'
 
+require 'rspec/its'
+require 'piwik'
+
 RSpec.configure do |config|
   Dir[File.join(File.dirname(__FILE__),'spec','support''**','*.rb')].each {|f| require f}
   config.mock_with :rspec

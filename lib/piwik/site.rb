@@ -28,13 +28,18 @@ module Piwik
   class Site < Base
     api_scope :actions
     api_scope :annotations
-    api_scope :devices_detection
+    api_scope :devices, :class_name => 'DevicesDetection'
     api_scope :events
     api_scope :goals
+    api_scope :language, :class_name => 'UserLanguage'
     api_scope :referrers
+    api_scope :resolution
     api_scope :scheduled_reports
     api_scope :transitions
     api_scope :visits, :class_name => 'VisitsSummary'
+    api_scope :user, :class_name => 'UserSettings'
+    api_scope :users_flow
+    api_scope :countries, :class_name => 'UserCountry'
 
     # Returns search engine information for site home
     def seo_info

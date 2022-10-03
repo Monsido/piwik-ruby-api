@@ -8,8 +8,8 @@ module Piwik
       getOsVersions
       getBrowsers
       getBrowserVersions
+      getBrowserFamilies
       getBrowserEngines
     }
   end
 end
-

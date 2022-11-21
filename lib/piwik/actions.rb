@@ -58,6 +58,14 @@ module Piwik
       def outlink(outlink_url, params = {})
         getOutlink(defaults.merge(params).merge(:outlinkUrl => outlink_url))
       end
+
+      def site_search_keywords params = {}
+        getSiteSearchKeywords(defaults.merge(params))
+      end
+
+      def site_search_no_result_keywords params = {}
+        getSiteSearchNoResultKeywords(defaults.merge(params))
+      end
     end
   end
 end

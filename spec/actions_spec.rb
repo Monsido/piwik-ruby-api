@@ -16,4 +16,5 @@ describe 'Piwik::Actions' do
   assert_data_integrity(:getEntryPageUrls, :size => 5)
   assert_data_integrity(:getExitPageTitles, :size => 5)
   assert_data_integrity(:getExitPageUrls, :size => 5)
+  assert_data_integrity(:getSiteSearchKeywords, :size => 4)
 end

@@ -8,6 +8,7 @@ module Piwik
       getOsVersions
       getBrowserVersions
       getBrowserFamilies
+      getBrowserEngines
     }
 
     scoped_methods do
@@ -36,7 +37,11 @@ module Piwik
       end
 
       def browser_families params = {}
-        getBrowserFamilies(defaults.merge(params))
+        if Gem::Version.new(API.getPiwikVersion(defaults.merge(params)).value) >= Gem::Version.new("4.0.0")
+          getBrowserEngines(defaults.merge(params))
+        else
+          getBrowserFamilies(defaults.merge(params))
+        end
       end
     end
   end

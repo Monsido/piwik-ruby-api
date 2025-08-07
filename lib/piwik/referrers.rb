@@ -57,6 +57,10 @@ module Piwik
       def socials params = {}
         getSocials(defaults.merge(params))
       end
+
+      def campaigns params = {}
+        getCampaigns(defaults.merge(params))
+      end
     end
   end
 end

@@ -27,7 +27,7 @@ def stub_api_calls
   # will always return a success response
   Piwik::Base.stub(:call) do |method,params,piwik_url,auth_token|
     resp_file = File.join(File.dirname(__FILE__),'files',"#{method}.xml")
-    xml = if File.exists?(resp_file)
+    xml = if File.exist?(resp_file)
       File.binread resp_file
     else
       File.binread File.join(success_response)

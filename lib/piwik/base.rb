@@ -173,7 +173,7 @@ EOF
           home =  ENV['HOME'] || ENV['USERPROFILE'] || ENV['HOMEPATH'] || "."
           filename = ".piwik"
         end
-        temp_config = if File.exists?(File.join(home,filename))
+        temp_config = if File.exist?(File.join(home,filename))
           YAML::load(open(File.join(home,filename)))
         else
           open(File.join(home,filename),'w') { |f| f.puts @@template }

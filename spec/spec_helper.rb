@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'piwik'
 
 require 'rspec/its'

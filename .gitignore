@@ -6,3 +6,4 @@ nbproject
 .elscripto
 Gemfile.lock
 .DS_Store
+coverage

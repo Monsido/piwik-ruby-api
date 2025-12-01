@@ -6,11 +6,11 @@ OptionParser.new do |opts|
   opts.on("-u", "--url [URL]", "Piwik URL") do |url|
     options[:piwik_url] = url
   end
-  
+
   opts.on("-t", "--token [TOKEN]", "Piwik Auth Token") do |token|
     options[:token_auth] = token
   end
-  
+
 end.parse!
 
 unless options.empty?
@@ -22,11 +22,11 @@ include Piwik
 }
 
   File.open('./.piwik.rc.rb','w') { |f| f.puts(code) }
-  
+
 end
 
 libs =  '-rubygems'
 libs << ' -r irb/completion'
 libs << ' -r piwik'
-libs << ' -r ./.piwik.rc.rb' if File.exists?('./.piwik.rc.rb')
+libs << ' -r ./.piwik.rc.rb' if File.exist?('./.piwik.rc.rb')
 exec "irb #{libs}"
